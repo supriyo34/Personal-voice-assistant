@@ -1,0 +1,85 @@
+pip install SpeechRecognition
+pip install pyjokes
+pip install pyaudio
+import pyttsx3
+import speech_recognition as sr
+import webbrowser
+import datetime
+import pyjokes
+import pyaudio
+def sptext():  #we have made a function for speech to text conversion 
+    #object=module_name.class_name
+    recognizer=sr.Recognizer()   #we have called Recognizer class and store it in the variable or oject recognizer
+    with sr.Microphone() as source:  #we have called used microphone function and to collect data from source 
+        print("Listening....") #using print statement to know when to speak if the above statement stays correct then it will print listening and get started speaking
+        recognizer.adjust_for_ambient_noise(source)#adjusting the source noice or noice removed from source
+        audio=recognizer.listen(source)#recognizer will listen audio from souce and store it in variable audio
+        #we use try and except if the audio is recorded then it will print recognizing  otherwise dont understand
+        try:
+            print("recognizing...")
+            data=recognizer.recognize_google(audio) #we use google recognizer for audio 
+            print(data) #then data will print 
+            return data
+        except sr.UnknownvalueError:
+            print("Not understand")
+sptext()   #here we are calling the function  
+#text to speech function
+def speechtx(x):
+    engine=pyttsx3.init()
+    voices =engine.getProperty('voices')#we are getting the voice properties 
+    engine.setProperty('voice',voices[0].id)#here we will be using male voice .here 0 means male 1 means female
+    #to set the speed of the speech we use the set property 
+    rate =engine.getProperty('rate')#we will get the set property
+    engine.setProperty('rate',150)#we set the rate as 150
+    engine.say(x)
+    engine.runAndWait()
+speechtx("hello guys")    
+if __name__=='__main__': #we are writing thiss line of code because to split the function if we run this code than above function willnot work and if we call the previous functions then this code will not work
+        try:
+            data1=sptext().lower()#that means we are converting the speech into text format and set it in the lower case 
+            if "your name" in data1:#if your name is there in speech format or data1
+                name ="my name is SD"#we have to give text for speechtxb 
+                speechtx(name)
+            elif "who are you" in  data1:
+                speak = '''Hello, I am SD. Your personal Assistant.
+                I am here to make your life easier. You can command me to perform
+                various tasks such as calculating sums or opening applications etcetra'''
+                speechtx(speak)
+            elif "who made you" in data1:
+                speak = "I have been created by Supriyo dhar."
+                speechtx(speak)    
+            elif "old are you" in data1:#old are you is keyword
+                age="I am 20 years old "
+                speechtx(age)
+            elif  ' time' in data1:
+                time= datetime.datetime.now().strftime("%I%M%p")
+                speechtx(time)
+            elif 'youtube' in data1:
+                webbrowser.open("https://www.youtube.com/")
+            elif "joke" in data1:
+                joke1=pyjokes.get_joke(language="en",category="neutral")
+                print(joke1)
+                speechtx(joke1)
+            elif 'open google' in data1:
+                speechtx('Opening Google')
+                webbrowser.open('google.com')
+            elif 'open facebook' in data1:
+                speechtx('Opening Facebook')
+                webbrowser.open('facebook.com')
+            elif 'open linkedin' in data1:
+                speechtx('Opening Linkedin')
+                webbrowser.open('linkedin.com')
+            elif 'open gmail' in data1:
+                speechtx('Opening Gmail')
+                webbrowser.open('gmail.com')
+            elif 'shutdown' in data1:
+                speechtx('I am shutting down')
+                self.close_window() 
+            elif "chrome" in data1:
+                speechtx("opening google  chrome")
+                webbrowser.open('chrome.com')
+            else:
+                speechtx('I did not understand, can you repeat again')
+        except:
+              speechtx('Waiting for your response')    
+           
